@@ -59,12 +59,12 @@ class Adaptery(private val mContext: Context, private val mData: List<MovieModel
             id.text = movieModelClass.id
             name.text = movieModelClass.name
 
-           itemView.setOnClickListener{ clickListener.onClick(movieModelClass.movie_id!!)}
+           itemView.setOnClickListener{ clickListener.onClick(movieModelClass)}
         }
     }
 }
 
-class OnClickListener(val clickListener: (movie_id: String) -> Unit) {
-    fun onClick(string: String) = clickListener(string)
+class OnClickListener(val clickListener: (movie_id: MovieModelClass) -> Unit) {
+    fun onClick(string: MovieModelClass) = clickListener(string)
 
 }

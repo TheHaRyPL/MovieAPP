@@ -30,19 +30,21 @@ class MainActivity : AppCompatActivity() {
         recyclerView = findViewById(R.id.recyclerView)
         header = findViewById(R.id.imageView3)
         header?.let {
-        Glide.with(this)
-            .load(R.drawable.img)
-            .into(it)}
+            Glide.with(this)
+                .load(R.drawable.img)
+                .into(it)
+        }
         val getData = GetData()
         getData.execute()
     }
+
     //details
     private fun showMovieDetails(movie: MovieModelClass) {
         val intent = Intent(this, DetailsActivity::class.java)
         intent.putExtra(MOVIE_POSTER, movie.img)
         intent.putExtra(MOVIE_TITLE, movie.name)
         intent.putExtra(MOVIE_RELEASE_DATE, movie.date)
-        intent.putExtra(MOVIE_OVERVIEW,movie.overview)
+        intent.putExtra(MOVIE_OVERVIEW, movie.overview)
         startActivity(intent)
     }
 
@@ -87,6 +89,8 @@ class MainActivity : AppCompatActivity() {
                     model.id = jsonObject1.getString("vote_average")
                     model.name = jsonObject1.getString("title")
                     model.img = jsonObject1.getString("poster_path")
+                    model.overview = jsonObject1.getString("overview")
+                    model.date = jsonObject1.getString("release_date")
                     movieList!!.add(model)
                 }
             } catch (e: JSONException) {
@@ -98,10 +102,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun PutDataIntoRecyclerView(movieList: List<MovieModelClass>?) {
-        val adaptery = Adaptery(this, movieList!!, OnClickListener { movie_id ->
+        val adaptery = Adaptery(this, movieList!!, OnClickListener { movie ->
             var i = Intent(this, DetailsActivity::class.java)
-        i.putExtra("movie_id", movie_id)
-        startActivity(i)})
+            i.putExtra("movie_id", movie.movie_id)
+            i.putExtra("release_date", movie.date)
+            i.putExtra("overview", movie.overview)
+            i.putExtra("poster_path", movie.img)
+            i.putExtra("title", movie.name)
+            startActivity(i)
+        })
         recyclerView!!.layoutManager = GridLayoutManager(this, 3)
         recyclerView!!.adapter = adaptery
 
